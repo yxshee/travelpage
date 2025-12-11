@@ -137,7 +137,7 @@ export function JournalSection() {
   return (
     <section className="Journal" ref={sectionRef}>
       <div className="journal-header">
-        <div className="number fMedium">06</div>
+        <div className="number fMedium">03</div>
         <h2 className="s-title2 fSerif">Journal &amp; Stories</h2>
       </div>
 

@@ -37,7 +37,7 @@ export function MusicCard() {
 
   return (
     <div className={`col-span-full card music-card ${isPlaying ? 'is-playing' : ''}`} data-color="light">
-      <div className="number fMedium">03</div>
+      <div className="number fMedium">V</div>
       <div className="player-ui">
         <div className="controls-group">
           <button

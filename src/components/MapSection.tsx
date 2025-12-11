@@ -103,7 +103,7 @@ export function MapSection() {
   return (
     <section className="MapSection" ref={sectionRef}>
       <div className="map-header">
-        <div className="number fMedium">07</div>
+        <div className="number fMedium">04</div>
         <h2 className="s-title2 fSerif">The Map</h2>
       </div>
 

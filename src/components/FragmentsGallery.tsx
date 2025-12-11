@@ -34,7 +34,7 @@ export function FragmentsGallery() {
 
   return (
     <div className="col-span-full card fragments-card" data-color="dark">
-      <div className="number fMedium">04</div>
+      <div className="number fMedium">VI</div>
       <div className="title fMedium fragments-title">Fragments</div>
       <div className="b-left">
         <p className="s-title5">moments from the road.</p>
