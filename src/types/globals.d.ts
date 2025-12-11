@@ -31,6 +31,7 @@ declare namespace gsap {
     scrub?: boolean | number;
     pin?: boolean;
     markers?: boolean;
+    toggleActions?: string;
   }
 
   function to(targets: TweenTarget, vars: TweenVars): any;
@@ -42,6 +43,11 @@ declare namespace gsap {
 
 export declare const ScrollTrigger: {
   refresh(): void;
+  getAll(): Array<{
+    vars: { trigger?: string | Element };
+    kill(): void;
+  }>;
+  create(vars: gsap.ScrollTriggerVars): void;
 };
 
 // Lenis types (loaded from CDN)

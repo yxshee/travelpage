@@ -5,6 +5,10 @@ import { Preloader } from '@/components/Preloader';
 import { CustomCursor } from '@/components/CustomCursor';
 import { FixedControls } from '@/components/FixedControls';
 import { HeroSection } from '@/components/HeroSection';
+import { PhilosophySection } from '@/components/PhilosophySection';
+import { JournalSection } from '@/components/JournalSection';
+import { MapSection } from '@/components/MapSection';
+import { NewsletterSection } from '@/components/NewsletterSection';
 import { WorksSection } from '@/components/WorksSection';
 import { ContactSection } from '@/components/ContactSection';
 import { HeroCursorImage } from '@/components/HeroCursorImage';
@@ -47,8 +51,20 @@ export default function TravelPage() {
         {/* Intro Section (Hero) */}
         <HeroSection />
 
+        {/* Philosophy / About Section */}
+        <PhilosophySection />
+
         {/* Works / Chapters Section */}
         <WorksSection />
+
+        {/* Journal & Stories Section */}
+        <JournalSection />
+
+        {/* Interactive Map Section */}
+        <MapSection />
+
+        {/* Newsletter Signup Section */}
+        <NewsletterSection />
 
         {/* Footer / Contact Section */}
         <ContactSection />
