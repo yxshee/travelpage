@@ -377,6 +377,19 @@ body.dark-mode .travel-scope .card[data-color="dark"] {
     line-height: 1.2;
 }
 
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    font-family: var(--font-primary);
+    overflow-x: hidden;
+    cursor: none;
+}
+
+html {
+    cursor: none;
+}
+
 .travel-scope .card .title.fragments-title {
     font-size: 7.2rem;
     letter-spacing: -0.02em;
@@ -442,7 +455,7 @@ body.dark-mode .travel-scope .card[data-color="dark"] {
     width: 11.2rem;
     height: 11.2rem;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 2147483647;
     mix-blend-mode: exclusion;
     transform: translate(-50%, -50%) scale(0);
     transition: transform 0.2s ease;
@@ -513,27 +526,18 @@ body.dark-mode .travel-scope .card[data-color="dark"] {
     cursor: none !important;
 }
 
-.travel-preloader .preloader-video {
-    display: block;
-    width: var(--preloader-video-width);
-    height: var(--preloader-video-height);
-    object-fit: contain;
-    object-position: center;
-    opacity: 0.95;
-    margin: 0 auto;
+.travel-preloader .preloader-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.travel-preloader .preloader-percentage {
-    position: relative;
-    z-index: 1;
-    font-family: "Poppins", sans-serif;
-    font-size: var(--preloader-percent-size);
-    font-weight: var(--preloader-percent-weight);
-    color: #ffffff;
-    text-transform: none;
-    letter-spacing: 0.08rem;
-    text-align: center;
-    width: 100%;
+.travel-preloader .preloader-canvas canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 .travel-preloader.hidden {
@@ -1274,16 +1278,18 @@ body.dark-mode .travel-scope .journal-card {
 
 .travel-scope .map-container {
     position: relative;
-    background: rgba(0, 0, 0, 0.02);
-    border: 0.8px solid rgba(0, 0, 0, 0.1);
-    border-radius: 1.6rem;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.08) 100%);
+    border: 0.8px solid rgba(0, 0, 0, 0.12);
+    border-radius: 2rem;
     padding: var(--spacing-page);
     overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 body.dark-mode .travel-scope .map-container {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 }
 
 .travel-scope .map-svg {
@@ -1294,52 +1300,71 @@ body.dark-mode .travel-scope .map-container {
 
 .travel-scope .map-line {
     stroke: var(--text-color);
-    stroke-width: 0.15;
-    opacity: 0.15;
+    stroke-width: 0.2;
+    opacity: 0.2;
+    stroke-linecap: round;
 }
 
 .travel-scope .map-line-2 {
-    opacity: 0.1;
+    opacity: 0.12;
+    stroke-width: 0.15;
 }
 
 .travel-scope .map-line-3 {
-    opacity: 0.05;
+    opacity: 0.06;
+    stroke-width: 0.1;
 }
 
 .travel-scope .map-path {
     stroke: var(--text-color);
-    stroke-width: 0.2;
-    stroke-dasharray: 1 1;
-    opacity: 0.4;
+    stroke-width: 0.25;
+    stroke-dasharray: 1.5 0.8;
+    opacity: 0.5;
+    stroke-linecap: round;
 }
 
 .travel-scope .map-point-group {
     cursor: none !important;
+    transition: transform 0.3s ease;
+}
+
+.travel-scope .map-point-group:hover {
+    transform: scale(1.2);
 }
 
 .travel-scope .map-point-pulse {
     fill: transparent;
     stroke: var(--text-color);
-    stroke-width: 0.3;
-    opacity: 0.5;
-    animation: map-pulse 2s ease-in-out infinite;
+    stroke-width: 0.4;
+    opacity: 0.6;
+    animation: map-pulse 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 2px var(--text-color));
 }
 
 .travel-scope .map-point-core {
     fill: var(--text-color);
+    filter: drop-shadow(0 0 3px var(--text-color));
+}
+
+body.dark-mode .travel-scope .map-point-pulse {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+body.dark-mode .travel-scope .map-point-core {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
 }
 
 @keyframes map-pulse {
 
     0%,
     100% {
-        opacity: 0.5;
+        opacity: 0.6;
         r: 3;
     }
 
     50% {
-        opacity: 0.2;
-        r: 4.5;
+        opacity: 0.25;
+        r: 5;
     }
 }
 

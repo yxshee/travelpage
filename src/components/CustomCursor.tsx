@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import gsap from 'gsap';
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -39,47 +40,36 @@ export function CustomCursor() {
     const cursor = cursorRef.current;
     if (!cursor || typeof window === 'undefined') return;
 
-    // Wait for gsap to be available
-    const initCursor = () => {
-      if (typeof window.gsap === 'undefined') {
-        setTimeout(initCursor, 100);
-        return;
-      }
+    // Show cursor immediately if mouse has moved
+    const showCursor = () => {
+      gsap.set(cursor, { opacity: 1, scale: 1 });
+      window.removeEventListener('mousemove', showCursor);
+    };
+    window.addEventListener('mousemove', showCursor);
 
-      const gsap = window.gsap;
+    // Track mouse position and update cursor
+    const handleMouseMove = (e: MouseEvent) => {
+      mousePositionRef.current = { x: e.clientX, y: e.clientY };
 
-      // Show cursor on first mouse movement
-      const showCursor = () => {
-        gsap.set(cursor, { opacity: 1, scale: 1 });
-        window.removeEventListener('mousemove', showCursor);
-      };
-      window.addEventListener('mousemove', showCursor);
+      gsap.to(cursor, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.1,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      });
 
-      // Track mouse position and update cursor
-      const handleMouseMove = (e: MouseEvent) => {
-        mousePositionRef.current = { x: e.clientX, y: e.clientY };
-
-        gsap.to(cursor, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.1,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
-
-        checkCursorOverlap();
-      };
-
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('scroll', checkCursorOverlap, { passive: true });
-
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('scroll', checkCursorOverlap);
-      };
+      checkCursorOverlap();
     };
 
-    initCursor();
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', checkCursorOverlap, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', showCursor);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', checkCursorOverlap);
+    };
   }, [checkCursorOverlap]);
 
   return (
