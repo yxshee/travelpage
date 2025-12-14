@@ -6,11 +6,11 @@ export function Preloader() {
   const [hidden, setHidden] = useState(false);
   const [removed, setRemoved] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const p5InstanceRef = useRef<InstanceType<typeof import('p5').default> | null>(null);
   const startTimeRef = useRef<number>(0);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const sketch = useCallback((p: InstanceType<typeof import('p5').default>) => {
     let t = 0;
     const a = 9;
