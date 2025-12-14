@@ -49,6 +49,7 @@ export function ParallaxMedia({ type, src, alt, className }: ParallaxMediaProps)
         muted
         loop
         playsInline
+        preload="none" // PERF: Defer video loading until visible
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >

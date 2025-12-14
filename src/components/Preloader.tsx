@@ -42,8 +42,8 @@ export function Preloader() {
 
       let x = 0.1, y = 0.1, z = 0.1;
       
-      // 30,000 points per frame for the trail effect
-      for (let i = 30000; i > 0; i--) {
+      // PERF: Reduced from 30,000 to 8,000 points (~75% GPU savings)
+      for (let i = 8000; i > 0; i--) {
         // Calculate physics (Lorenz equations)
         const dx = (y - x) * a;
         const dy = (b - z) * x - y;
@@ -96,6 +96,11 @@ export function Preloader() {
       const delay = Math.max(0, duration - elapsed + 500);
 
       setTimeout(() => {
+        // PERF FIX: Stop p5 animation IMMEDIATELY when hiding to save GPU
+        if (p5InstanceRef.current) {
+          p5InstanceRef.current.remove();
+          p5InstanceRef.current = null;
+        }
         setHidden(true);
         setTimeout(() => {
           setRemoved(true);
