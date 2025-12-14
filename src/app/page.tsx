@@ -38,10 +38,8 @@ export default function TravelPage() {
       {/* Fixed Controls Group */}
       <FixedControls />
 
-      {/* Background Music Audio Element */}
-      <audio id="bg-music" loop>
-        <source src="/core/bgm.mp3" type="audio/mp3" />
-      </audio>
+      {/* Background Music Audio Element - src set dynamically by useMusicPlayer */}
+      <audio id="bg-music" loop />
 
       {/* Preloader */}
       <Preloader />

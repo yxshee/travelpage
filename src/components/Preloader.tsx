@@ -43,7 +43,7 @@ export function Preloader() {
       let x = 0.1, y = 0.1, z = 0.1;
       
       // PERF: Reduced from 30,000 to 8,000 points (~75% GPU savings)
-      for (let i = 8000; i > 0; i--) {
+      for (let i = 7500; i > 0; i--) {
         // Calculate physics (Lorenz equations)
         const dx = (y - x) * a;
         const dy = (b - z) * x - y;

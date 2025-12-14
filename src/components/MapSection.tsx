@@ -148,8 +148,16 @@ export function MapSection() {
               className="map-point-group"
               onMouseEnter={(e) => handlePointEnter(loc, e)}
               onMouseLeave={handlePointLeave}
-              style={{ cursor: 'none' }}
+              style={{ cursor: 'none', pointerEvents: 'all' }}
             >
+              {/* Invisible larger hit area for easier hovering */}
+              <circle
+                cx={loc.x}
+                cy={loc.y}
+                r="6"
+                fill="transparent"
+                style={{ pointerEvents: 'all' }}
+              />
               {/* Pulsing outer ring */}
               <circle
                 cx={loc.x}

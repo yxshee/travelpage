@@ -3,22 +3,47 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
+interface CachedRect {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const mousePositionRef = useRef({ x: 0, y: 0 });
   const cursorRadius = 90;
+  const cachedRectsRef = useRef<CachedRect[]>([]);
+  const cachedLinksRef = useRef<Element[]>([]);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor || typeof window === 'undefined') return;
 
-    // PERF: Cache link elements, update only on DOM mutations
-    let cachedLinks: Element[] = [];
+    // Update link cache and their rects
     const updateLinkCache = () => {
-      cachedLinks = Array.from(document.querySelectorAll('.card, a, button, .hover-link'));
+      cachedLinksRef.current = Array.from(
+        document.querySelectorAll('.card, a, button, .hover-link')
+      );
+      updateCachedRects();
     };
+
+    // PERF: Cache rects to avoid layout thrashing
+    const updateCachedRects = () => {
+      cachedRectsRef.current = cachedLinksRef.current.map((link) => {
+        const rect = link.getBoundingClientRect();
+        return {
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+        };
+      });
+    };
+
     updateLinkCache();
-    
+
     // Update cache when DOM changes
     const observer = new MutationObserver(updateLinkCache);
     observer.observe(document.body, { childList: true, subtree: true });
@@ -30,13 +55,12 @@ export function CustomCursor() {
     };
     window.addEventListener('mousemove', showCursor);
 
-    // PERF: Inline overlap check to avoid function call overhead
+    // PERF: Check overlap using cached rects (no forced layout)
     const checkOverlap = () => {
       const { x: mouseX, y: mouseY } = mousePositionRef.current;
       let isOverLink = false;
-      
-      for (const link of cachedLinks) {
-        const rect = link.getBoundingClientRect();
+
+      for (const rect of cachedRectsRef.current) {
         const closestX = Math.max(rect.left, Math.min(mouseX, rect.right));
         const closestY = Math.max(rect.top, Math.min(mouseY, rect.bottom));
         const dx = mouseX - closestX;
@@ -70,25 +94,32 @@ export function CustomCursor() {
       }
     };
     window.addEventListener('mousemove', handleMouseMove);
-    
-    // PERF: Throttle scroll handler
-    let scrollTicking = false;
+
+    // PERF: Update cached rects on scroll (debounced)
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
     const handleScroll = () => {
-      if (!scrollTicking) {
-        requestAnimationFrame(() => {
-          checkOverlap();
-          scrollTicking = false;
-        });
-        scrollTicking = true;
-      }
+      // Update rects after scroll settles (debounced)
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        updateCachedRects();
+        checkOverlap();
+      }, 100);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // PERF: Update cached rects on resize
+    const handleResize = () => {
+      updateCachedRects();
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
 
     return () => {
       observer.disconnect();
       window.removeEventListener('mousemove', showCursor);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, []);
 
