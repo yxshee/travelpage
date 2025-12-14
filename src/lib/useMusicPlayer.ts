@@ -8,6 +8,7 @@ const playlist = [
     name: 'I Smoked Away My Brain',
     path: "/music/A$AP Rocky - I Smoked Away My Brain (I'm God x Demons Mashup) (Audio) ft. Imogen Heap, Clams Casino.mp3",
   },
+  { name: 'Stay Here', path: '/music/A$AP ROCKY - STAY HERE (VISUALIZER).mp3' },
   { name: 'And I Love Her', path: '/music/And I Love Her (Remastered 2009).mp3' },
   { name: "Can't Tell Me Nothing", path: "/music/Can't Tell Me Nothing.mp3" },
   { name: 'SWIM', path: '/music/Chase Atlantic - SWIM (Official Music Video).mp3' },
