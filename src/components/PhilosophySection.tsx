@@ -4,12 +4,38 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 
+// const philosophyLines = [
+//   'We don\'t travel to escape life,',
+//   'we travel so life doesn\'t escape us.',
+//   'Every trail tells a story.',
+//   'Every summit is a beginning.',
+// ];
+
+
+// const philosophyImages = [
+//   '/core/image1.webp',
+//   '/core/image2.webp',
+//   '/core/image3.webp',
+//   '/core/image4.webp',
+
+// ];
+
+// const philosophyLines = [
+//   "The trail doesn’t get easier—",
+//   "we get quieter inside it.",
+//   "Every summit is borrowed time,",
+//   "paid back in gratitude.",
+// ];
+
 const philosophyLines = [
-  'We don\'t travel to escape life,',
-  'we travel so life doesn\'t escape us.',
-  'Every trail tells a story.',
-  'Every summit is a beginning.',
+  "We don’t travel to run away,",
+  "we travel to return more awake.",
+  "The road doesn’t change the world",
+  "it changes the way we see it.",
 ];
+
+
+
 
 export function PhilosophySection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -104,6 +130,7 @@ export function PhilosophySection() {
 
       {/* Content */}
       <div className="philosophy-content">
+        {/* <div className="number fMedium" style={{ marginBottom: '1rem', opacity: 0.6 }}>01</div> */}
         <div className="philosophy-label fMedium">The Philosophy</div>
         <div className="philosophy-lines">
           {philosophyLines.map((line, index) => (

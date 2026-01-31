@@ -10,6 +10,7 @@ export function WorksSection() {
       <div className="grid-wrapper">
         {/* Section Title */}
         <div className="col-span-full section-header">
+          {/* <div className="number fMedium">02</div> */}
           <h2 className="s-title2 fSerif">Featured Trails</h2>
         </div>
 

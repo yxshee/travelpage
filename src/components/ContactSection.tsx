@@ -26,7 +26,7 @@ export function ContactSection() {
       <div className="grid-wrapper">
         {/* Left Column: CTA */}
         <div className="col-span-6 contact-left">
-          <div className="number fMedium">05</div>
+          <div className="number fMedium">06</div>
           <h2 className="s-title2 fSerif">
             Next
             <br />

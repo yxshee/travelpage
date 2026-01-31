@@ -108,7 +108,7 @@ export function NewsletterSection() {
     <section className="Newsletter" ref={sectionRef}>
       <div className="newsletter-content">
         <div className="newsletter-header">
-          <div className="number fMedium">08</div>
+          <div className="number fMedium">05</div>
           <h2 className="s-title2 fSerif">Join the Odyssey</h2>
         </div>
 
