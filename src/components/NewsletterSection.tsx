@@ -139,7 +139,7 @@ export function NewsletterSection() {
             disabled={isSubmitted}
           >
             <span className="newsletter-btn-text">
-              {isSubmitted ? 'Boarded ✓' : isHovering ? 'Boarding' : 'Subscribe'}
+              {isSubmitted ? 'Boarded' : isHovering ? 'Boarding' : 'Subscribe'}
             </span>
           </button>
         </form>
