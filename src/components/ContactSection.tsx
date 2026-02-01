@@ -56,14 +56,6 @@ export function ContactSection() {
             >
               home
             </Link>
-            <Link
-              href="/timeline"
-              className="hover-link"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              timeline
-            </Link>
             <a
               href="mailto:yxshdogra@gmail.com"
               className="hover-link"
