@@ -55,30 +55,33 @@ export function PhilosophySection() {
 
       gsap.registerPlugin(ScrollTrigger);
 
-      // Animate each line on scroll
+      // Animate each line on scroll with staggered word reveal
       linesRef.current.forEach((line, index) => {
         if (!line) return;
 
-        gsap.fromTo(
+        // Initial state
+        gsap.set(line, {
+          opacity: 0,
+          y: 80,
+          rotateX: -20,
+          transformPerspective: 600,
+        });
+
+        gsap.to(
           line,
-          {
-            opacity: 0,
-            y: 60,
-            rotateX: -15,
-          },
           {
             opacity: 1,
             y: 0,
             rotateX: 0,
-            duration: 1.2,
-            ease: 'power3.out',
+            duration: 1.4,
+            ease: 'power4.out',
             scrollTrigger: {
               trigger: line,
-              start: 'top 85%',
-              end: 'top 50%',
+              start: 'top 90%',
+              end: 'top 60%',
               toggleActions: 'play none none reverse',
             },
-            delay: index * 0.1,
+            delay: index * 0.15,
           }
         );
       });

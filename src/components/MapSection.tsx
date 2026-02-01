@@ -10,12 +10,15 @@ interface Location {
   image: string;
 }
 
+// Coordinates mapped from real lat/long to SVG viewBox (0-100 x 0-70)
+// Bounding box: Lat 31.9-32.3, Long 76.2-77.6
+// Formula: x = (long - 76.2) / 1.4 * 100, y = (32.3 - lat) / 0.4 * 70
 const locations: Location[] = [
-  { id: 'triund', name: 'Triund', x: 32, y: 28, image: '/core/triund.webp' },
-  { id: 'tosh', name: 'Tosh', x: 45, y: 35, image: '/core/image3.webp' },
-  { id: 'manali', name: 'Manali', x: 58, y: 42, image: '/core/image2.webp' },
-  { id: 'dharamshala', name: 'Dharamshala', x: 25, y: 45, image: '/core/image3.webp' },
-  { id: 'kasol', name: 'Kasol', x: 52, y: 52, image: '/core/triund.webp' },
+  { id: 'dharamshala', name: 'Dharamshala', x: 8.8, y: 14.2, image: '/core/image3.webp' },  // 32.219°N, 76.323°E
+  { id: 'triund', name: 'Triund', x: 8.2, y: 10.8, image: '/core/triund.webp' },          // 32.238°N, 76.315°E
+  { id: 'kasol', name: 'Kasol', x: 79.6, y: 50.8, image: '/core/triund.webp' },            // 32.010°N, 77.315°E
+  { id: 'tosh', name: 'Tosh', x: 90.0, y: 45.9, image: '/core/image3.webp' },              // 32.038°N, 77.460°E
+  { id: 'manali', name: 'Manali', x: 70.5, y: 10.6, image: '/core/image2.webp' },          // 32.240°N, 77.189°E
 ];
 
 export function MapSection() {
@@ -130,9 +133,9 @@ export function MapSection() {
             fill="none"
           />
 
-          {/* Connecting dotted path */}
+          {/* Connecting dotted path - Dharamshala -> Triund -> Manali -> Tosh -> Kasol */}
           <path
-            d="M32,28 L45,35 L58,42 L52,52 M32,28 L25,45"
+            d="M8.8,14.2 L8.2,10.8 L70.5,10.6 L90,45.9 L79.6,50.8"
             className="map-path"
             fill="none"
           />

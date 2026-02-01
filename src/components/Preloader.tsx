@@ -1,36 +1,102 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 export function Preloader() {
-  const [progress, setProgress] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [removed, setRemoved] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const p5InstanceRef = useRef<InstanceType<typeof import('p5').default> | null>(null);
   const startTimeRef = useRef<number>(0);
 
-  useEffect(() => {
-    const duration = 1500; // 1.5 seconds to reach 100%
-    startTimeRef.current = performance.now();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sketch = useCallback((p: InstanceType<typeof import('p5').default>) => {
+    let t = 0;
+    const a = 9;
+    const b = 28;
+    const c = 2;
+    const w = 400; // Reference width from original code
 
-    const animatePercentage = (currentTime: number) => {
-      const elapsed = currentTime - startTimeRef.current;
-      const newProgress = Math.min((elapsed / duration) * 100, 100);
-      setProgress(Math.floor(newProgress));
-
-      if (newProgress < 100) {
-        requestAnimationFrame(animatePercentage);
-      }
+    p.setup = () => {
+      const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+      canvas.style('display', 'block');
     };
 
-    requestAnimationFrame(animatePercentage);
+    p.windowResized = () => {
+      p.resizeCanvas(p.windowWidth, p.windowHeight);
+    };
+
+    p.draw = () => {
+      t += 2; // Doubled speed for smoother, faster animation
+      p.background(9); // Matches original background(9)
+
+      p.push();
+      // Center the drawing in the window
+      p.translate(p.width / 2, p.height / 2);
+      
+      // Calculate optimized scale to fit screen
+      const scale = Math.min(p.width, p.height) / w * 0.8; 
+      p.scale(scale);
+      p.translate(0, 125); // Adjust vertical center alignment based on attractor shape
+
+      let x = 0.1, y = 0.1, z = 0.1;
+      
+      // 30,000 points per frame for the trail effect
+      for (let i = 30000; i > 0; i--) {
+        // Calculate physics (Lorenz equations)
+        const dx = (y - x) * a;
+        const dy = (b - z) * x - y;
+        const dz = x * y - c * z;
+        
+        x += dx * 0.001;
+        y += dy * 0.001;
+        z += dz * 0.001;
+
+        // Visual logic directly from source
+        const s = (i + t) % 540 !== 0 ? 1 : 5;
+        
+        // stroke(w, s * 96) -> w is 400 (white), alpha varies
+        p.strokeWeight(s / scale); // Compensate for scale to keep points crisp
+        p.stroke(255, s * 96);
+        
+        // Projection logic
+        const px = (x + y) * (p.sin(t * p.PI / 90 + z / 49 + x * x / w) * 2 + 2);
+        const py = -z * 5;
+        
+        p.point(px, py);
+      }
+      p.pop();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || p5InstanceRef.current) return;
+
+    // Dynamically import p5 to avoid SSR window error
+    import('p5').then((p5Module) => {
+      const p5 = p5Module.default;
+      p5InstanceRef.current = new p5(sketch, containerRef.current!);
+    });
+
+    return () => {
+      if (p5InstanceRef.current) {
+        p5InstanceRef.current.remove();
+        p5InstanceRef.current = null;
+      }
+    };
+  }, [sketch]);
+
+  useEffect(() => {
+    const duration = 1800; // Faster preload
+    startTimeRef.current = performance.now();
 
     const hidePreloader = () => {
       const elapsed = performance.now() - startTimeRef.current;
-      const delay = Math.max(0, duration - elapsed + 300);
+      const delay = Math.max(0, duration - elapsed + 500);
 
       setTimeout(() => {
         setHidden(true);
-        // Remove from DOM after transition
         setTimeout(() => {
           setRemoved(true);
         }, 800);
@@ -53,10 +119,7 @@ export function Preloader() {
       className={`travel-preloader ${hidden ? 'hidden' : ''}`}
       style={removed ? { display: 'none' } : undefined}
     >
-      <video className="preloader-video" autoPlay muted loop playsInline>
-        <source src="/preloader.mp4" type="video/mp4" />
-      </video>
-      <div className="preloader-percentage">{progress}%</div>
+      <div ref={containerRef} className="preloader-canvas" />
     </div>
   );
 }
