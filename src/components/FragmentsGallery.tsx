@@ -54,6 +54,7 @@ export function FragmentsGallery() {
                   muted
                   loop
                   playsInline
+                  preload="none"
                 >
                   <source src={fragment.src} type="video/mp4" />
                 </video>
