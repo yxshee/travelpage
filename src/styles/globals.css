@@ -1276,126 +1276,159 @@ body.dark-mode .travel-scope .journal-card {
     letter-spacing: 0.04em;
 }
 
-.travel-scope .map-container {
+/* Main map container */
+.travel-scope .map-box {
     position: relative;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.08) 100%);
-    border: 0.8px solid rgba(0, 0, 0, 0.12);
-    border-radius: 2rem;
-    padding: var(--spacing-page);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.06) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
     overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
-body.dark-mode .travel-scope .map-container {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+body.dark-mode .travel-scope .map-box {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* SVG Map */
 .travel-scope .map-svg {
     width: 100%;
     height: auto;
-    max-height: 500px;
+    min-height: 250px;
+    max-height: 400px;
+    color: var(--text-color);
 }
 
-.travel-scope .map-line {
-    stroke: var(--text-color);
-    stroke-width: 0.2;
-    opacity: 0.2;
-    stroke-linecap: round;
+/* Pulse ring animation */
+.travel-scope .map-pulse-ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    opacity: 0.4;
+    animation: mapPulse 2s ease-in-out infinite;
 }
 
-.travel-scope .map-line-2 {
-    opacity: 0.12;
-    stroke-width: 0.15;
+.travel-scope .map-core-dot {
+    fill: currentColor;
+    filter: drop-shadow(0 0 4px currentColor);
 }
 
-.travel-scope .map-line-3 {
-    opacity: 0.06;
-    stroke-width: 0.1;
-}
-
-.travel-scope .map-path {
-    stroke: var(--text-color);
-    stroke-width: 0.25;
-    stroke-dasharray: 1.5 0.8;
-    opacity: 0.5;
-    stroke-linecap: round;
-}
-
-.travel-scope .map-point-group {
-    cursor: none !important;
-    transition: transform 0.3s ease;
-}
-
-.travel-scope .map-point-group:hover {
-    transform: scale(1.2);
-}
-
-.travel-scope .map-point-pulse {
-    fill: transparent;
-    stroke: var(--text-color);
-    stroke-width: 0.4;
-    opacity: 0.6;
-    animation: map-pulse 2.5s ease-in-out infinite;
-    filter: drop-shadow(0 0 2px var(--text-color));
-}
-
-.travel-scope .map-point-core {
-    fill: var(--text-color);
-    filter: drop-shadow(0 0 3px var(--text-color));
-}
-
-body.dark-mode .travel-scope .map-point-pulse {
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
-}
-
-body.dark-mode .travel-scope .map-point-core {
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
-}
-
-@keyframes map-pulse {
+@keyframes mapPulse {
 
     0%,
     100% {
-        opacity: 0.6;
-        r: 3;
+        r: 12;
+        opacity: 0.4;
     }
 
     50% {
-        opacity: 0.25;
-        r: 5;
+        r: 18;
+        opacity: 0.1;
     }
 }
 
+/* Location cards */
+.travel-scope .map-locations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.travel-scope .map-location-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: none !important;
+}
+
+body.dark-mode .travel-scope .map-location-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.travel-scope .map-location-card:hover,
+.travel-scope .map-location-card.is-active {
+    background: rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+body.dark-mode .travel-scope .map-location-card:hover,
+body.dark-mode .travel-scope .map-location-card.is-active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.travel-scope .map-location-number {
+    font-size: 0.7rem;
+    opacity: 0.4;
+    font-weight: 500;
+}
+
+.travel-scope .map-location-name {
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* Tooltip */
 .travel-scope .map-tooltip {
     position: fixed;
     transform: translate(-50%, -100%);
     background: var(--bg-color);
-    border: 0.8px solid var(--text-color);
-    border-radius: 0.8rem;
-    padding: 0.8rem;
-    z-index: 1000;
+    border: 1px solid var(--text-color);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.6rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    gap: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     pointer-events: none;
+    animation: tooltipAppear 0.15s ease-out;
+}
+
+@keyframes tooltipAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -90%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
 }
 
 .travel-scope .map-tooltip-image {
-    width: 80px;
-    height: 60px;
+    width: 120px;
+    height: 80px;
     background-size: cover;
     background-position: center;
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
 }
 
 .travel-scope .map-tooltip-name {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.travel-scope .map-tooltip-region {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    letter-spacing: 0.05em;
 }
 
 .travel-scope .map-caption {
